@@ -18,9 +18,10 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
  */
 public class Main {
     public static void main(String args[]) {
-        int notas = 6;
+        int cantidadNotas = 6, cantidadAprobados = 0, cantidadNoAprobados = 0;
+        double standardDeviation = 0;
         try {
-            int i = 0, z = 0;
+            int i = 0, z = 0, cantidadEstudiantes = 0;
             String[] notas = new String[162];
             String rutaArchivoExcel = "/home/osso/Documentos/Comutacion e interfaces/semana 3/DATOS.xlsx";
             FileInputStream inputStream = new FileInputStream(new File(rutaArchivoExcel));
@@ -49,7 +50,7 @@ public class Main {
                     i=i+1;
                 }
             }
-
+            cantidadEstudiantes = i/8;
             String[] guardarNotas = new String[i];
             for ( int j = 8 ; j < i ; j++ ) {
                 guardarNotas[z] = notas[j];
@@ -116,13 +117,31 @@ public class Main {
                 }
             }
             int k = 0;
-            for (int j = 0; j < ((i/8)-1); j++) {
-                //for (int k = 0; k < f; k = k + 6 ) {
-                    //System.out.println("Codigo : " + codigo[j] + " Nombre : " + nombre[j] + " Notas : " + notasOkNum[k] + "  " + notasOkNum[k+1] + "  " + notasOkNum[k+2] + "  " + notasOkNum[k+3] + "  " + notasOkNum[k+4] + "  " + notasOkNum[k+5] );
+            double def[] = new double[cantidadEstudiantes], promedioGeneral = 0, sum = 0 ;
+            for (int j = 0; j < (cantidadEstudiantes-1); j++) {
+                def[j] = ((notasOkNum[k] * 0.5) + (((notasOkNum[k+1] + notasOkNum[k+2] + notasOkNum[k+3]) / 3) * 0.3) + (((notasOkNum[k+4] + notasOkNum[k+5]) / 2) * 0.2 ));
+                //System.out.println(def[j]);
+                // ((def[j] >= 3) ? cantidadAprobados++ : cantidadNoAprobados++)
+                if (def[j] >= 3) {
+                    cantidadAprobados++;
+                } else {
+                    cantidadNoAprobados++;
+                }
 
+                sum += def[j] ;
+
+                //for (k = 0; k < f; k = k + 6 ) {
+                System.out.println("Codigo : " + codigo[j] + " Nombre : " + nombre[j] + " Notas : " + notasOkNum[k] + "  " + notasOkNum[k+1] + "  " + notasOkNum[k+2] + "  " + notasOkNum[k+3] + "  " + notasOkNum[k+4] + "  " + notasOkNum[k+5] + " Definitiva : " + def[j] + ((def[j] >= 3) ? " Aprobado" : " Reprobado ") );
                 //}
-                k=k+notas;
+                k=k+cantidadNotas;
             }
+            promedioGeneral = sum / cantidadEstudiantes;
+            // System.out.println(promedioGeneral);
+
+            for (int n = 0; n < cantidadEstudiantes; n++) {
+                standardDeviation = (standardDeviation + Math.pow((def[n] - promedioGeneral), 2));
+            }
+            // System.out.println(standardDeviation);
 
         } catch (Exception e) {
             e.printStackTrace();
