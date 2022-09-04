@@ -43,7 +43,7 @@ public class Main {
                     String contenidoCelda = formatter.formatCellValue(cell);
 
                     contenidoCelda = ((contenidoCelda == "" ) ? "0" : contenidoCelda );
-                    contenidoCelda = contenidoCelda.replace(",", ".");
+                    contenidoCelda = contenidoCelda.replace(",", "."); // PASAR COMA A PUNTO
 
                     notas[i] = contenidoCelda;
                     // System.out.println(notas[i]);
@@ -119,29 +119,31 @@ public class Main {
             int k = 0;
             double def[] = new double[cantidadEstudiantes], promedioGeneral = 0, sum = 0 ;
             for (int j = 0; j < (cantidadEstudiantes-1); j++) {
-                def[j] = ((notasOkNum[k] * 0.5) + (((notasOkNum[k+1] + notasOkNum[k+2] + notasOkNum[k+3]) / 3) * 0.3) + (((notasOkNum[k+4] + notasOkNum[k+5]) / 2) * 0.2 ));
+                def[j] = ((notasOkNum[k] * 0.5) + (((notasOkNum[k+1] + notasOkNum[k+2] + notasOkNum[k+3]) / 3) * 0.3) + (((notasOkNum[k+4] + notasOkNum[k+5]) / 2) * 0.2 ));// PUNTO
                 //System.out.println(def[j]);
                 // ((def[j] >= 3) ? cantidadAprobados++ : cantidadNoAprobados++)
                 if (def[j] >= 3) {
-                    cantidadAprobados++;
+                    cantidadAprobados++;// PUNTO
                 } else {
-                    cantidadNoAprobados++;
+                    cantidadNoAprobados++;// PUNTO
                 }
 
                 sum += def[j] ;
 
                 //for (k = 0; k < f; k = k + 6 ) {
-                System.out.println("Codigo : " + codigo[j] + " Nombre : " + nombre[j] + " Notas : " + notasOkNum[k] + "  " + notasOkNum[k+1] + "  " + notasOkNum[k+2] + "  " + notasOkNum[k+3] + "  " + notasOkNum[k+4] + "  " + notasOkNum[k+5] + " Definitiva : " + def[j] + ((def[j] >= 3) ? " Aprobado" : " Reprobado ") );
+                //System.out.println("Codigo : " + codigo[j] + " Nombre : " + nombre[j] + " Notas : " + notasOkNum[k] + "  " + notasOkNum[k+1] + "  " + notasOkNum[k+2] + "  " + notasOkNum[k+3] + "  " + notasOkNum[k+4] + "  " + notasOkNum[k+5] + " Definitiva : " + def[j] + ((def[j] >= 3) ? " Aprobado" : " Reprobado ") );
                 //}
                 k=k+cantidadNotas;
             }
-            promedioGeneral = sum / cantidadEstudiantes;
+            promedioGeneral = sum / cantidadEstudiantes; // PUNTO
             // System.out.println(promedioGeneral);
 
             for (int n = 0; n < cantidadEstudiantes; n++) {
-                standardDeviation = (standardDeviation + Math.pow((def[n] - promedioGeneral), 2));
+                standardDeviation = (standardDeviation + Math.pow((def[n] - promedioGeneral), 2)); // PUNTO
             }
             // System.out.println(standardDeviation);
+            // POSICION - CODIGO - NOMBRE - DEFINITIVA - APRONOAPRO -
+
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -151,4 +153,5 @@ public class Main {
     private static boolean isNumeric(String str){
         return str != null && str.matches("[0-9.]+");
     }
+
 }
