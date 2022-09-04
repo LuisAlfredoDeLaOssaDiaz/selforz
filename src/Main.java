@@ -60,14 +60,41 @@ public class Main {
             }
 
             int au = 7;
+            int w = 0;
+            String[] onlyNotas = new String[guardarNotas.length];
             for (int g = 2 ; g < guardarNotas.length ; g++) {
+                onlyNotas[w] = (guardarNotas[g]);
 
                 if (g == au) {
-                   g = g + 3;
-                   au = au + 7;
-               }
-                System.out.println(guardarNotas[g]);
+                    g = g + 2;
+                    au = au + 8;
+                }
+                w++;
             }
+
+            int f = 0;
+            String filtroNotas[] = new String[guardarNotas.length];
+            for (int l = 0; l < guardarNotas.length; l++) {
+                if (onlyNotas[l] == null) {
+                } else {
+                    if (isNumeric(onlyNotas[l])) {
+                    } else {
+                        onlyNotas[l] = "0";
+                    }
+                    filtroNotas[f] = (onlyNotas[l]);
+                    f++;
+                }
+            }
+            String notasOk[] = new String[f];
+            for (int u = 0; u < f; u++) {
+                if (filtroNotas[u] == null) {
+                } else {
+                    notasOk[u] = filtroNotas[u];
+                }
+                System.out.println(notasOk[u]);
+            }
+
+            System.out.println(f);
         } catch (Exception e) {
             e.printStackTrace();
         }
