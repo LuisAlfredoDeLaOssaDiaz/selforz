@@ -18,6 +18,7 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
  */
 public class Main {
     public static void main(String args[]) {
+        int notas = 6;
         try {
             int i = 0, z = 0;
             String[] notas = new String[162];
@@ -44,14 +45,15 @@ public class Main {
                     contenidoCelda = contenidoCelda.replace(",", ".");
 
                     notas[i] = contenidoCelda;
+                    // System.out.println(notas[i]);
                     i=i+1;
                 }
             }
 
             String[] guardarNotas = new String[i];
-
-            for ( int j = 9 ; j < i ; j++ ) {
+            for ( int j = 8 ; j < i ; j++ ) {
                 guardarNotas[z] = notas[j];
+                // System.out.println(guardarNotas[z]);
                 int a = j + 9;
                 if ( j == a ) {
                     j=9;
@@ -61,10 +63,11 @@ public class Main {
 
             int au = 7;
             int w = 0;
+            int a = 0;
             String[] onlyNotas = new String[guardarNotas.length];
             for (int g = 2 ; g < guardarNotas.length ; g++) {
                 onlyNotas[w] = (guardarNotas[g]);
-
+                // System.out.println((a++) + "  "+onlyNotas[w]);
                 if (g == au) {
                     g = g + 2;
                     au = au + 8;
@@ -82,6 +85,7 @@ public class Main {
                         onlyNotas[l] = "0";
                     }
                     filtroNotas[f] = (onlyNotas[l]);
+                    // System.out.println((a++) + "  "+filtroNotas[f]);
                     f++;
                 }
             }
@@ -96,8 +100,30 @@ public class Main {
                 if (notasOkNum[u] < 0 || notasOkNum[u] > 5) {
                     notasOkNum[u] = 0;
                 }
-                System.out.println(notasOkNum[u]);
+                // System.out.println(notasOkNum[u]);
+                // System.out.println((a++) + "  "+notasOkNum[u]*2);
             }
+            int cont = 0;
+            String codigo[] = new String[f];
+            String nombre[] = new String[f];
+            for (int j = 0; j < f; j++) {
+                codigo[j] = guardarNotas[cont];
+                nombre[j] = guardarNotas[cont+1];
+                //System.out.println(guardarNotas[cont+1]);
+                cont = cont + 8;
+                if (guardarNotas[cont] == null) {
+                    j = guardarNotas.length + 1;
+                }
+            }
+            int k = 0;
+            for (int j = 0; j < ((i/8)-1); j++) {
+                //for (int k = 0; k < f; k = k + 6 ) {
+                    //System.out.println("Codigo : " + codigo[j] + " Nombre : " + nombre[j] + " Notas : " + notasOkNum[k] + "  " + notasOkNum[k+1] + "  " + notasOkNum[k+2] + "  " + notasOkNum[k+3] + "  " + notasOkNum[k+4] + "  " + notasOkNum[k+5] );
+
+                //}
+                k=k+notas;
+            }
+
         } catch (Exception e) {
             e.printStackTrace();
         }
