@@ -27,6 +27,7 @@ public class Main {
             Sheet firstSheet = workbook.getSheetAt(0);
             Iterator iterator = firstSheet.iterator();
 
+
             DataFormatter formatter = new DataFormatter();
 
             while (iterator.hasNext()) {
@@ -41,7 +42,6 @@ public class Main {
 
                     contenidoCelda = ((contenidoCelda == "" ) ? "0" : contenidoCelda );
                     contenidoCelda = contenidoCelda.replace(",", ".");
-
 
                     notas[i] = contenidoCelda;
                     i=i+1;
@@ -86,15 +86,18 @@ public class Main {
                 }
             }
             String notasOk[] = new String[f];
+            float notasOkNum[] = new float[f];
             for (int u = 0; u < f; u++) {
                 if (filtroNotas[u] == null) {
                 } else {
                     notasOk[u] = filtroNotas[u];
                 }
-                System.out.println(notasOk[u]);
+                notasOkNum[u] = Float.valueOf(notasOk[u]);
+                if (notasOkNum[u] < 0 || notasOkNum[u] > 5) {
+                    notasOkNum[u] = 0;
+                }
+                System.out.println(notasOkNum[u]);
             }
-
-            System.out.println(f);
         } catch (Exception e) {
             e.printStackTrace();
         }
