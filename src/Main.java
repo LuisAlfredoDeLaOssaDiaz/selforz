@@ -21,9 +21,12 @@ public class Main {
         int cantidadNotas = 6, cantidadAprobados = 0, cantidadNoAprobados = 0;
         double standardDeviation = 0;
         try {
+            Scanner read = new Scanner(System.in);
+            System.out.print("Ingrese ruta del archivo; ");
+            String rutaArchivoExcel = read.nextLine();
             int i = 0, z = 0, cantidadEstudiantes = 0;
             String[] notas = new String[162];
-            String rutaArchivoExcel = "/home/osso/Documentos/Comutacion e interfaces/semana 3/DATOS.xlsx";
+            // rutaArchivoExcel = "/home/osso/Documentos/Comutacion e interfaces/semana 3/DATOS.xlsx";
             FileInputStream inputStream = new FileInputStream(new File(rutaArchivoExcel));
             Workbook workbook = new XSSFWorkbook(inputStream);
             Sheet firstSheet = workbook.getSheetAt(0);
@@ -131,19 +134,49 @@ public class Main {
                 sum += def[j] ;
 
                 //for (k = 0; k < f; k = k + 6 ) {
-                //System.out.println("Codigo : " + codigo[j] + " Nombre : " + nombre[j] + " Notas : " + notasOkNum[k] + "  " + notasOkNum[k+1] + "  " + notasOkNum[k+2] + "  " + notasOkNum[k+3] + "  " + notasOkNum[k+4] + "  " + notasOkNum[k+5] + " Definitiva : " + def[j] + ((def[j] >= 3) ? " Aprobado" : " Reprobado ") );
+                System.out.println("Codigo : " + codigo[j] + " Nombre : " + nombre[j] + " Notas : " + notasOkNum[k] + "  " + notasOkNum[k+1] + "  " + notasOkNum[k+2] + "  " + notasOkNum[k+3] + "  " + notasOkNum[k+4] + "  " + notasOkNum[k+5] + " Definitiva : " + def[j] + ((def[j] >= 3) ? " Aprobado" : " Reprobado ") );
                 //}
                 k=k+cantidadNotas;
             }
             promedioGeneral = sum / cantidadEstudiantes; // PUNTO
-            // System.out.println(promedioGeneral);
-
+            System.out.println("promedioGeneral : " + promedioGeneral);
+            System.out.println("cantidadAprobados : " + cantidadAprobados);
+            System.out.println("cantidadNoAprobados : " + cantidadNoAprobados);
             for (int n = 0; n < cantidadEstudiantes; n++) {
                 standardDeviation = (standardDeviation + Math.pow((def[n] - promedioGeneral), 2)); // PUNTO
             }
+            System.out.println("standardDeviation : " + standardDeviation);
             // System.out.println(standardDeviation);
             // POSICION - CODIGO - NOMBRE - DEFINITIVA - APRONOAPRO -
+            String deff[] = new String[def.length];
+            for (int u = 0; u < def.length; u++) {
+                deff[u] = String.valueOf(def[u]);
+            }
+            String promedioGeneral_s;
+            String standardDeviation_s;
+            String cantidadAprobados_s;
+            String cantidadNoAprobados_s;
+            promedioGeneral_s = String.valueOf(promedioGeneral);
+            standardDeviation_s = String.valueOf(standardDeviation);
+            cantidadAprobados_s = String.valueOf(cantidadAprobados);
+            cantidadNoAprobados_s = String.valueOf(cantidadNoAprobados);
 
+            String exportar[] = new String[200];
+            int cnt = 0;
+            for (int j = 0; j < 19; j++) {
+                exportar[j] = codigo[cnt];
+                exportar[j++] = nombre[cnt];
+                cnt++;
+            }
+
+            exportar[20*10-1] = promedioGeneral_s;
+            exportar[20*10-2] = standardDeviation_s;
+            exportar[20*10-3] = cantidadAprobados_s;
+            exportar[20*10-4] = cantidadNoAprobados_s;
+
+            for (int j = 0; j < exportar.length; j++) {
+                //System.out.println(exportar[j]);
+            }
 
         } catch (Exception e) {
             e.printStackTrace();
