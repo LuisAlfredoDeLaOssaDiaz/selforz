@@ -1,17 +1,15 @@
-import java.awt.*;
-import java.io.File;
-import java.io.FileInputStream;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.Scanner;
-
-import org.apache.poi.ss.usermodel.Cell;
-import org.apache.poi.ss.usermodel.Sheet;
-import org.apache.poi.ss.usermodel.DataFormatter;
-import org.apache.poi.ss.usermodel.Row;
-import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.ss.usermodel.*;
+import org.apache.poi.xssf.usermodel.XSSFCell;
+import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.util.Iterator;
+import java.util.Scanner;
 /**
  *
  * @author decodigo
@@ -22,7 +20,7 @@ public class Main {
         double standardDeviation = 0;
         try {
             Scanner read = new Scanner(System.in);
-            System.out.print("Ingrese ruta del archivo; ");
+            System.out.print("Ingrese ruta del archivo: ");
             String rutaArchivoExcel = read.nextLine();
             int i = 0, z = 0, cantidadEstudiantes = 0;
             String[] notas = new String[162];
@@ -161,24 +159,57 @@ public class Main {
             cantidadAprobados_s = String.valueOf(cantidadAprobados);
             cantidadNoAprobados_s = String.valueOf(cantidadNoAprobados);
 
-            String exportar[] = new String[200];
-            int cnt = 0;
-            for (int j = 0; j < 19; j++) {
-                exportar[j] = codigo[cnt];
-                exportar[j++] = nombre[cnt];
-                cnt++;
+            String exportar[][] = new String[codigo.length][codigo.length];
+            for(int h = 0; i<codigo.length;h++){
+                exportar[h][0] = codigo[h];
+                exportar[h][1] = nombre[h];
+                exportar[h][2] = String.valueOf(def[i]);
+                exportar[h][3] = (def[h] >= 3.0) ? " Aprobado" : " Reprobado ";
             }
-
-            exportar[20*10-1] = promedioGeneral_s;
-            exportar[20*10-2] = standardDeviation_s;
-            exportar[20*10-3] = cantidadAprobados_s;
-            exportar[20*10-4] = cantidadNoAprobados_s;
-
-            for (int j = 0; j < exportar.length; j++) {
-                //System.out.println(exportar[j]);
-            }
-
+            exportar[0][4] = promedioGeneral_s;
+            exportar[0][5] = standardDeviation_s;
+            exportar[0][6] = cantidadAprobados_s;
+            exportar[0][7] = cantidadNoAprobados_s;
+            exportar(exportar);
         } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static void exportar(String[][] informacion){
+        XSSFWorkbook libro= new XSSFWorkbook();
+        String nombreArchivo="calificacion.xlsx";
+        String directorioActual = System.getProperty("user.dir");
+        String rutaArchivo= directorioActual+"\\"+nombreArchivo;
+        String hoja="Resultados";
+        XSSFSheet hoja1 = libro.createSheet(hoja);
+        String [] cabecera= new String[]{"Codigos","Nombres","Definitivas","Aprobado/No Aprobado","Promedio general","Desviacion","Cantidad de aprobados","Cantidad de no aprobados"};
+        for (int i = 0; i <= informacion.length; i++) {
+            XSSFRow row=hoja1.createRow(i);//se crea las filas
+            for (int j = 0; j < cabecera.length; j++) {
+                XSSFCell cell= row.createCell(j);//se crea las celdas para la cabecera, junto con la posición
+                //se crea las celdas para el contenido, junto con la posición
+                if (i==0) {//para la cabecera
+                    cell.setCellValue(cabecera[j]);//se añade el contenido
+                }else{//para el contenido
+                    cell.setCellValue(informacion[i-1][j]); //se añade el contenido
+                }
+            }
+        }
+
+        File file;
+        file = new File(rutaArchivo);
+        try (FileOutputStream fileOuS = new FileOutputStream(file)){
+            if (file.exists()) {// si el archivo existe se elimina
+                file.delete();
+                System.out.println("Archivo eliminado");
+            }
+            libro.write(fileOuS);
+            fileOuS.flush();
+            fileOuS.close();
+            System.out.println("Archivo Creado");
+
+        } catch (IOException e) {
             e.printStackTrace();
         }
     }
